@@ -28,7 +28,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      # Upload the built jar as an artifact f
+      # Upload the built jar as an artifact
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
