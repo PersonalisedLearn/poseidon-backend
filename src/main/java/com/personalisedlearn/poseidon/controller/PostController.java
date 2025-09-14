@@ -45,10 +45,10 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostRequest postRequest) {
-        logger.info("POST /api/posts - Creating new post for user: {}", postRequest.getUserId());
+        logger.info("POST /api/posts - Creating new post for username: {}", postRequest.getUserName());
         logger.debug("Post content: {}", postRequest.getContent());
         PostResponse createdPost = postService.createPost(postRequest);
-        logger.info("Created post with ID: {}", createdPost.getId());
+        logger.info("Created post with ID: {} for username: {}", createdPost.getId(), postRequest.getUserName());
         return new ResponseEntity<>(
                 createdPost,
                 HttpStatus.CREATED

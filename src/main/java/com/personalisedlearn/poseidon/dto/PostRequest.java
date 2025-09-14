@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class PostRequest {
-    @NotBlank(message = "User ID is required")
-    private String userId;
+    @NotBlank(message = "Username is required")
+    private String userName;
     
     @NotBlank(message = "Content is required")
     private String content;

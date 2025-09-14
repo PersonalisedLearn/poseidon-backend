@@ -49,8 +49,8 @@ public class PostService {
     }
 
     public PostResponse createPost(PostRequest postRequest) {
-        User user = userRepository.findById(postRequest.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + postRequest.getUserId()));
+        User user = userRepository.findByUsername(postRequest.getUserName())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + postRequest.getUserName()));
         
         Post post = postMapper.toEntity(postRequest);
         post.setUser(user);
