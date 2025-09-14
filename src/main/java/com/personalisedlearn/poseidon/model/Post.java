@@ -1,37 +1,31 @@
 package com.personalisedlearn.poseidon.model;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.time.LocalDateTime;
+
+@Data
 @Document(collection = "posts")
 public class Post {
     @Id
     private String id;
-    private String title;
+    
+    @DBRef
+    private User user;
+    
     private String content;
-
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
+    private LocalDateTime timestamp;
+    private int likes;
+    private int comments;
+    private Media media;
+    
+    @Data
+    public static class Media {
+        private String url;
+        private String type; // 'image' or 'video'
     }
 }
