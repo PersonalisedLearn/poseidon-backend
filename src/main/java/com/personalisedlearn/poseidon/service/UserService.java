@@ -6,6 +6,7 @@ import com.personalisedlearn.poseidon.exception.DuplicateUsernameException;
 import com.personalisedlearn.poseidon.exception.ResourceNotFoundException;
 import com.personalisedlearn.poseidon.model.User;
 import com.personalisedlearn.poseidon.repository.UserRepository;
+import com.personalisedlearn.poseidon.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import com.personalisedlearn.poseidon.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final UserMapper userMapper;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -65,11 +68,23 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
+    @Transactional
     public void deleteUser(String id) {
-        if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("User not found with id: " + id);
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        
+        // Delete all posts by this user
+        try {
+            postRepository.deleteAllByUserId(id);
+            logger.info("Deleted all posts for user: {}", id);
+        } catch (Exception e) {
+            logger.error("Error deleting posts for user: " + id, e);
+            throw new RuntimeException("Failed to delete user's posts", e);
         }
-        userRepository.deleteById(id);
+        
+        // Delete the user
+        userRepository.delete(user);
+        logger.info("Deleted user: {}", id);
     }
 
     public UserResponse getUserByUsername(String username) {

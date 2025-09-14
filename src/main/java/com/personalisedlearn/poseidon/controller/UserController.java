@@ -70,15 +70,20 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
-            @PathVariable String id,
+            @PathVariable("id") String id,
             @Valid @RequestBody UserRequest userRequest
     ) {
-        return ResponseEntity.ok(userService.updateUser(id, userRequest));
+        logger.info("PUT /api/users/{} - Updating user", id);
+        UserResponse updatedUser = userService.updateUser(id, userRequest);
+        logger.debug("Successfully updated user: {}", id);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+        logger.info("DELETE /api/users/{} - Deleting user", id);
         userService.deleteUser(id);
+        logger.info("Successfully deleted user: {}", id);
         return ResponseEntity.noContent().build();
     }
 }
