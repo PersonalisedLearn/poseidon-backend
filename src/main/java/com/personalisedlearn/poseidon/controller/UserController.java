@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -49,6 +50,14 @@ public class UserController {
         UserResponse user = userService.getUserByUsername(username);
         logger.debug("Found user: {}", user != null ? user.getUsername() : "null");
         return ResponseEntity.ok(user);
+    }
+    
+    @GetMapping("/check-username/{username}")
+    public ResponseEntity<Map<String, Boolean>> checkUsernameAvailability(@PathVariable("username") String username) {
+        logger.info("GET /api/users/check-username/{} - Checking username availability", username);
+        boolean isAvailable = !userService.usernameExists(username);
+        logger.debug("Username {} available: {}", username, isAvailable);
+        return ResponseEntity.ok(Collections.singletonMap("available", isAvailable));
     }
 
     @PostMapping

@@ -77,4 +77,8 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
         return userMapper.toResponse(user);
     }
+    
+    public boolean usernameExists(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
