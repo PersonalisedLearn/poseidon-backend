@@ -32,6 +32,7 @@ public class PostResponse {
         private String username;
         private String type;
         private String avatar;
+        private String gender;
         private String bio;
         private int followers;
         private int following;
