@@ -9,6 +9,7 @@ import com.personalisedlearn.poseidon.repository.PostRepository;
 import com.personalisedlearn.poseidon.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import com.personalisedlearn.poseidon.mapper.PostMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,8 @@ public class PostService {
 
     public List<PostResponse> getAllPosts() {
         try {
-            List<Post> posts = postRepository.findAll();
+            // Get all posts sorted by creation date in descending order (newest first)
+            List<Post> posts = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
             if (posts == null || posts.isEmpty()) {
                 return Collections.emptyList();
             }
