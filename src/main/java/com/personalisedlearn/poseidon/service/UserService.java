@@ -2,6 +2,7 @@ package com.personalisedlearn.poseidon.service;
 
 import com.personalisedlearn.poseidon.dto.UserRequest;
 import com.personalisedlearn.poseidon.dto.UserResponse;
+import com.personalisedlearn.poseidon.exception.DuplicateUsernameException;
 import com.personalisedlearn.poseidon.exception.ResourceNotFoundException;
 import com.personalisedlearn.poseidon.model.User;
 import com.personalisedlearn.poseidon.repository.UserRepository;
@@ -46,7 +47,7 @@ public class UserService {
 
     public UserResponse createUser(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new DuplicateUsernameException("Username already exists");
         }
         
         User user = userMapper.toEntity(userRequest);

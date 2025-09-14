@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable("username") String username) {
         logger.info("GET /api/users/username/{} - Fetching user by username", username);
         UserResponse user = userService.getUserByUsername(username);
         logger.debug("Found user: {}", user != null ? user.getUsername() : "null");
