@@ -36,11 +36,13 @@ public interface UserMapper extends BaseMapper<UserRequest, User> {
     @Mapping(target = "bio", source = "bio")
     @Mapping(target = "followers", source = "followers")
     @Mapping(target = "following", source = "following")
+    @Mapping(target = "gender", source = "gender")
     UserResponse toResponse(User user);
 
     @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "followers", ignore = true)
     @Mapping(target = "following", ignore = true)
+    @Mapping(target = "gender", source = "gender")
     void updateEntityFromDto(UserRequest dto, @MappingTarget User entity);
 }

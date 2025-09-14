@@ -1,5 +1,6 @@
 package com.personalisedlearn.poseidon.dto;
 
+import com.personalisedlearn.poseidon.model.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class UserResponse {
     private String bio;
     private int followers;
     private int following;
+    private Gender gender;
 }

@@ -1,7 +1,7 @@
 package com.personalisedlearn.poseidon.dto;
 
+import com.personalisedlearn.poseidon.model.Gender;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -19,4 +19,5 @@ public class UserRequest {
     private String bio;
     private int followers;
     private int following;
+    private Gender gender;
 }

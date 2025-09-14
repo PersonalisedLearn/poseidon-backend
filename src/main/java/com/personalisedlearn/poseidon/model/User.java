@@ -20,6 +20,8 @@ public class User {
     private String bio;
     private int followers;
     private int following;
+
+    private Gender gender;
     
     // Add any additional fields and methods as needed
 }
