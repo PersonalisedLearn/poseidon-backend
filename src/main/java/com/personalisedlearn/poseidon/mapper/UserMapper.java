@@ -20,7 +20,7 @@ public interface UserMapper extends BaseMapper<UserRequest, User> {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Override
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
     @Mapping(target = "followers", constant = "0")
     @Mapping(target = "following", constant = "0")
     User toEntity(UserRequest dto);

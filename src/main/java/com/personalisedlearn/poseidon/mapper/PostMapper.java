@@ -6,13 +6,15 @@ import com.personalisedlearn.poseidon.model.Post;
 import org.mapstruct.*;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 @Mapper(componentModel = "spring",
         uses = {UserMapper.class},
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface PostMapper extends BaseMapper<PostRequest, Post> {
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "timestamp", ignore = true)
     @Mapping(target = "likes", constant = "0")
