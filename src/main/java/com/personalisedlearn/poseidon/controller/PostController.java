@@ -28,17 +28,20 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getAllPosts() {
-        logger.info("GET /api/posts - Fetching all posts");
-        List<PostResponse> posts = postService.getAllPosts();
-        logger.debug("Returning {} posts", posts.size());
+    public ResponseEntity<List<PostResponse>> getAllPosts(
+            @RequestParam(value = "username", required = false) String username) {
+        logger.info("GET /api/posts - Fetching all posts for user: {}", username);
+        List<PostResponse> posts = postService.getAllPosts(username);
+        logger.debug("Returning {} posts", posts != null ? posts.size() : 0);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PostResponse> getPostById(@PathVariable String id) {
-        logger.info("GET /api/posts/{} - Fetching post by ID", id);
-        PostResponse post = postService.getPostById(id);
+    public ResponseEntity<PostResponse> getPostById(
+            @PathVariable String id,
+            @RequestParam(required = false) String username) {
+        logger.info("GET /api/posts/{} - Fetching post by ID for user: {}", id, username);
+        PostResponse post = postService.getPostById(id, username);
         logger.debug("Found post: {}", post != null ? post.getId() : "null");
         return ResponseEntity.ok(post);
     }
@@ -70,12 +73,17 @@ public class PostController {
     }
 
     @PostMapping("/{id}/like")
-    public ResponseEntity<PostResponse> likePost(@PathVariable String id) {
-        return ResponseEntity.ok(postService.likePost(id));
-    }
-
-    @PostMapping("/{id}/unlike")
-    public ResponseEntity<PostResponse> unlikePost(@PathVariable String id) {
-        return ResponseEntity.ok(postService.unlikePost(id));
+    public ResponseEntity<PostResponse> toggleLike(
+            @PathVariable("id") String id,
+            @RequestParam("username") String username) {
+        logger.info("Toggling like for post: {} by user: {}", id, username);
+        try {
+            PostResponse response = postService.toggleLike(id, username);
+            logger.info("Successfully toggled like. New like count: {}", response.getLikes());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Error toggling like for post: {} by user: {}", id, username, e);
+            throw e;
+        }
     }
 }
